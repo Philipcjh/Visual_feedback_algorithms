@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\stereo_calib.cpp" />
+    <ClCompile Include="..\calibration.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -82,8 +82,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
-    <IncludePath>D:\OpenCV450\opencv\build\include\opencv2;D:\OpenCV450\opencv\build\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\OpenCV450\opencv\build\x64\vc15\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\OpenCV450\install\include\opencv2;D:\OpenCV450\install\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\OpenCV450\install\x64\vc16\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -126,7 +126,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opencv_world450d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_aruco450d.lib;opencv_bgsegm450d.lib;opencv_bioinspired450d.lib;opencv_calib3d450d.lib;opencv_ccalib450d.lib;opencv_core450d.lib;opencv_datasets450d.lib;opencv_dnn450d.lib;opencv_dnn_objdetect450d.lib;opencv_dpm450d.lib;opencv_face450d.lib;opencv_features2d450d.lib;opencv_flann450d.lib;opencv_fuzzy450d.lib;opencv_gapi450d.lib;opencv_hfs450d.lib;opencv_highgui450d.lib;opencv_imgcodecs450d.lib;opencv_imgproc450d.lib;opencv_img_hash450d.lib;opencv_line_descriptor450d.lib;opencv_ml450d.lib;opencv_objdetect450d.lib;opencv_optflow450d.lib;opencv_phase_unwrapping450d.lib;opencv_photo450d.lib;opencv_plot450d.lib;opencv_quality450d.lib;opencv_reg450d.lib;opencv_rgbd450d.lib;opencv_saliency450d.lib;opencv_shape450d.lib;opencv_stereo450d.lib;opencv_stitching450d.lib;opencv_structured_light450d.lib;opencv_superres450d.lib;opencv_surface_matching450d.lib;opencv_text450d.lib;opencv_tracking450d.lib;opencv_video450d.lib;opencv_videoio450d.lib;opencv_videostab450d.lib;opencv_xfeatures2d450d.lib;opencv_ximgproc450d.lib;opencv_xobjdetect450d.lib;opencv_xphoto450d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

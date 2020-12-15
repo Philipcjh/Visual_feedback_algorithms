@@ -126,6 +126,7 @@ StereoCalib(const vector<string>& imagelist, Size boardSize, float squareSize, b
                 putchar('.');
             if (!found)
                 break;
+            cout << filename << endl;
             cornerSubPix(img, corners, Size(11, 11), Size(-1, -1),
                 TermCriteria(TermCriteria::COUNT + TermCriteria::EPS,
                     30, 0.01));
@@ -223,7 +224,7 @@ StereoCalib(const vector<string>& imagelist, Size boardSize, float squareSize, b
     stereoRectify(cameraMatrix[0], distCoeffs[0],
         cameraMatrix[1], distCoeffs[1],
         imageSize, R, T, R1, R2, P1, P2, Q,
-        CALIB_ZERO_DISPARITY, 1, imageSize, &validRoi[0], &validRoi[1]);
+        0, 1, imageSize, &validRoi[0], &validRoi[1]);//flag=0
 
     fs.open("extrinsics.yml", FileStorage::WRITE);
     if (fs.isOpened())

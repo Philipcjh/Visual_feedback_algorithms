@@ -490,36 +490,29 @@ cv::Mat attitudeVectorToMatrix(cv::Mat& m, bool useQuaternion, const std::string
 }
 
 
-//»úÐµ±ÛÄ©¶Ë20×éÎ»×Ë,x,y,z,rx,ry,rz
-Mat_<double> ToolPose = (cv::Mat_<double>(20, 6) <<
-    138.87, 474.91, 275.49, 2.8195, -1.3615, -0.1667,
-    133.93, 576.43, 256.87, 2.5928, -1.249, -0.0055,
-    163.34, 567.26, 246.07, 2.6102, -1.1792, -0.1627,
-    162.9, 570.92, 248.71, 2.6435, -1.185, -0.1765,
-    148.47, 577.76, 254.08, 2.6842, -1.2083, -0.1363,
-    118.78, 585.71, 253.08, 2.7599, -1.1427, 0.054,
-    41.81, 583.54, 252.88, 2.8358, -1.0848, 0.3929,
-    79.33, 576.73, 249.75, 2.744, -1.1845, 0.2785,
-    80.05, 573.35, 247.42, 2.7393, -1.1045, 0.2914,
-    74.8, 572.97, 247.14, 2.7149, -1.1082, 0.2052,
-    76.29, 484.07, 258.56, 2.8906, -1.1757, 0.0115,
-    77.15, 484.97, 259.38, 2.9029, -1.1803, 0.0202,
-    77.51, 486.78, 261.54, 2.9152, -1.206, 0.0032,
-    77.11, 490.92, 266.69, 2.959, -1.2221, -0.0346,
-    81.52, 491.22, 266.82, 2.9798, -1.2342, 0.0426,
-    85.15, 491.47, 267.09, 2.9958, -1.2434, 0.1072,
-    85.61, 487.27, 261.86, 2.9516, -1.2218, 0.1445,
-    85.78, 485.22, 259.51, 2.9307, -1.2115, 0.161,
-    80.97, 484.88, 259.14, 2.9096, -1.2032, 0.0792,
-    80, 487.99, 262.79, 2.9389, -1.215, 0.0405);
+//»úÐµ±ÛÄ©¶ËÎ»×Ë,x,y,z,rx,ry,rz
+Mat_<double> ToolPose = (cv::Mat_<double>(14, 6) <<
+    447, -115.57, 428, 3.02, 1.29, -0.24,
+    459.7, 23.49, 424.62, 2.6, 1.51, -0.431,
+    593.1, 8.67, 398.24, 2.824, 1.245, -0.782,
+    597.94, -131.82, 373.1, 3.2255, 0.8633, -0.6992,
+    445.81, -294.27, 384.55, 3.0189, -2.0398, -0.5623,
+    316.52, -214.95, 457.98, 2.8558, -2.3499, 0.0086,
+    -170.14, -147.92, 409.21, 2.9162, 1.15, 0.5607,
+    170.33, -58.04, 455.66, 2.8791, 0.9914, 0.3427,
+    198.17, -15.27, 410.8, 2.9496, 0.6984, 0.4194,
+    197.55, -30.28, 431.95, 3.1987, -0.4058, 0.6042,
+    190.75, -36.49, 462.62, 3.1394, -0.8955, 0.6264,
+    314.1, -83.88, 463.21, 3.1618, 0.4633, 0.218,
+    315.26, -62.68, 484.87, 3.2642, -0.2393, 0.2022,
+    311.43, -85.4, 480.2, 2.0044, 2.1832, -0.0565);
+
 
 
 
 int main(int argc, char** argv)
 {
-    argc = 2;
-    argv[0] = "calibration.exe";
-    argv[1] = "imagelist2.yaml";
+    
 
     Size boardSize, imageSize;
     float squareSize, aspectRatio = 1;
@@ -545,19 +538,18 @@ int main(int argc, char** argv)
     Pattern pattern = CHESSBOARD;
 
     cv::CommandLineParser parser(argc, argv,
-        "{help ||}{w||}{h||}{pt|chessboard|}{n|10|}{d|1000|}{s|1|}{o|out_camera_data.yml|}"
-        "{op||}{oe||}{zt||}{a||}{p||}{v||}{V||}{su||}"
+        "{help ||}{w|11|}{h|8|}{pt|chessboard|}{n|10|}{d|1000|}{s|10|}{o|out_camera_data.yml|}"
+        "{op||}{oe|1|}{zt||}{a||}{p||}{v||}{V||}{su||}"
         "{oo||}{ws|11|}{dt||}"
-        "{@input_data|0|}");
+        "{@input_data|imagelist2.yaml|}");
     if (parser.has("help"))
     {
         help(argv);
         return 0;
     }
-    //boardSize.width = parser.get<int>("w");
-    //boardSize.height = parser.get<int>("h");
-    boardSize.width = 11;
-    boardSize.height = 8;
+    boardSize.width = parser.get<int>("w");
+    boardSize.height = parser.get<int>("h");
+
     if (parser.has("pt"))
     {
         string val = parser.get<string>("pt");
@@ -570,13 +562,11 @@ int main(int argc, char** argv)
         else
             return fprintf(stderr, "Invalid pattern type: must be chessboard or circles\n"), -1;
     }
-    //squareSize = parser.get<float>("s");
-    squareSize = 10;
+    squareSize = parser.get<float>("s");
     nframes = parser.get<int>("n");
     delay = parser.get<int>("d");
     writePoints = parser.has("op");
-    //writeExtrinsics = parser.has("oe");
-    writeExtrinsics = true;
+    writeExtrinsics = parser.has("oe");
     bool writeGrid = parser.has("oo");
     
 
@@ -801,7 +791,7 @@ int main(int argc, char** argv)
     Mat t_cam2gripper = (Mat_<double>(3, 1));
 
     vector<Mat> images;
-    size_t num_images = 20;
+    size_t num_images = 14;
 
     // ¶ÁÈ¡Ä©¶Ë£¬±ê¶¨°åµÄ×ËÌ¬¾ØÕó 4*4
     std::vector<cv::Mat> vecHg, vecHc;

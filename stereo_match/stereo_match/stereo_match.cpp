@@ -63,7 +63,7 @@ int main(int argc, char** argv)
    /* cv::CommandLineParser parser(argc, argv,
         "{@arg1||}{@arg2||}{help h||}{algorithm||}{max-disparity|0|}{blocksize|0|}{no-display||}{color||}{scale|1|}{i||}{e||}{o||}{p||}");*/
     cv::CommandLineParser parser(argc, argv,
-        "{@arg1|3-1.bmp|}{@arg2|3-2.bmp|}{help h||}{algorithm||}{max-disparity|80|}{blocksize|7|}{no-display||}{color||}{scale|1|}{i|intrinsics.yml|}{e|extrinsics.yml|}{o||}{p||}");
+        "{@arg1|1-1.bmp|}{@arg2|1-2.bmp|}{help h||}{algorithm|sgbm|}{max-disparity|320|}{blocksize|9|}{no-display||}{color|1|}{scale|1|}{i|intrinsics.yml|}{e|extrinsics.yml|}{o||}{p||}");
     if (parser.has("help"))
     {
         print_help(argv);
@@ -198,7 +198,7 @@ int main(int argc, char** argv)
         fs["R"] >> R;
         fs["T"] >> T;
 
-        stereoRectify(M1, D1, M2, D2, img_size, R, T, R1, R2, P1, P2, Q, CALIB_ZERO_DISPARITY, -1, img_size, &roi1, &roi2);
+        stereoRectify(M1, D1, M2, D2, img_size, R, T, R1, R2, P1, P2, Q, 0, -1, img_size, &roi1, &roi2);
 
         Mat map11, map12, map21, map22;
         initUndistortRectifyMap(M1, D1, R1, P1, img_size, CV_16SC2, map11, map12);

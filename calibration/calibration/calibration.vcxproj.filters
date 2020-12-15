@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\stereo_calib.cpp">
+    <ClCompile Include="..\calibration.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

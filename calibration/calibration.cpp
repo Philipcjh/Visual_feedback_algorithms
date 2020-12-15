@@ -354,14 +354,11 @@ static bool runAndSave(const string& outputFilename,
 
 int main(int argc, char** argv)
 {
-    argc = 2;
-    argv[0] = "Calibration.exe";
-    argv[1] = "imagelist2.yaml";
 
     Size boardSize, imageSize;
     float squareSize, aspectRatio = 1;
     Mat cameraMatrix, distCoeffs;
-    string outputFilename="out_camera_data2.yml";
+    string outputFilename="";
     string inputFilename = "";
 
     int i, nframes;
@@ -381,19 +378,17 @@ int main(int argc, char** argv)
     Pattern pattern = CHESSBOARD;
 
     cv::CommandLineParser parser(argc, argv,
-        "{help ||}{w||}{h||}{pt|chessboard|}{n|10|}{d|1000|}{s|1|}{o|out_camera_data.yml|}"
+        "{help ||}{w|11|}{h|8|}{pt|chessboard|}{n|10|}{d|1000|}{s|10|}{o|out_camera_data.yml|}"
         "{op||}{oe||}{zt||}{a||}{p||}{v||}{V||}{su||}"
         "{oo||}{ws|11|}{dt||}"
-        "{@input_data|0|}");
+        "{@input_data|imagelist2.yaml|}");
     if (parser.has("help"))
     {
         help(argv);
         return 0;
     }
-    //boardSize.width = parser.get<int>("w");
-    //boardSize.height = parser.get<int>("h");
-    boardSize.width = 11;
-    boardSize.height = 8;
+    boardSize.width = parser.get<int>("w");
+    boardSize.height = parser.get<int>("h");
     if (parser.has("pt"))
     {
         string val = parser.get<string>("pt");
@@ -406,13 +401,11 @@ int main(int argc, char** argv)
         else
             return fprintf(stderr, "Invalid pattern type: must be chessboard or circles\n"), -1;
     }
-    //squareSize = parser.get<float>("s");
-    squareSize = 0.01;
+    squareSize = parser.get<float>("s");
     nframes = parser.get<int>("n");
     delay = parser.get<int>("d");
     writePoints = parser.has("op");
-    //writeExtrinsics = parser.has("oe");
-    writeExtrinsics = true;
+    writeExtrinsics = parser.has("oe");
     bool writeGrid = parser.has("oo");
     if (parser.has("a")) {
         flags |= CALIB_FIX_ASPECT_RATIO;
@@ -530,7 +523,9 @@ int main(int argc, char** argv)
         }
 
         // improve the found corners' coordinate accuracy
-        if (pattern == CHESSBOARD && found) cornerSubPix(viewGray, pointbuf, Size(winSize, winSize),
+        if (pattern == CHESSBOARD && found)
+            cout << imageList[i] << endl;
+            cornerSubPix(viewGray, pointbuf, Size(winSize, winSize),
             Size(-1, -1), TermCriteria(TermCriteria::EPS + TermCriteria::COUNT, 30, 0.0001));
 
         if (mode == CAPTURING && found &&
