@@ -274,118 +274,82 @@ static Mat drawGoodMatches(
 ////////////////////////////////////////////////////
 // This program demonstrates the usage of SURF_OCL.
 // use cpu findHomography interface to calculate the transformation matrix
-//int main(int argc, char* argv[])
-//{
-//    const char* keys =
-//        "{ h help     |                  | print help message  }"
-//        "{ l left     | 17-1.bmp          | specify left image  }"
-//        "{ r right    | 17-2.bmp | specify right image }"
-//        "{ o output   | SURF_output.jpg  | specify output save path }"
-//        "{ m cpu_mode |                  | run without OpenCL }";
-//
-//    CommandLineParser cmd(argc, argv, keys);
-//
-//    UMat img1, img2;
-//
-//    std::string outpath = cmd.get<std::string>("o");
-//
-//    std::string leftName = cmd.get<std::string>("l");
-//    imread(leftName, IMREAD_GRAYSCALE).copyTo(img1);
-//    if (img1.empty())
-//    {
-//        std::cout << "Couldn't load " << leftName << std::endl;
-//        cmd.printMessage();
-//        return EXIT_FAILURE;
-//    }
-//
-//    std::string rightName = cmd.get<std::string>("r");
-//    imread(rightName, IMREAD_GRAYSCALE).copyTo(img2);
-//    if (img2.empty())
-//    {
-//        std::cout << "Couldn't load " << rightName << std::endl;
-//        cmd.printMessage();
-//        return EXIT_FAILURE;
-//    }
-//
-//    double surf_time = 0.;
-//
-//    //declare input/output
-//    std::vector<KeyPoint> keypoints1, keypoints2;
-//    std::vector<DMatch> matches;
-//
-//    UMat _descriptors1, _descriptors2;
-//    Mat descriptors1 = _descriptors1.getMat(ACCESS_RW),
-//        descriptors2 = _descriptors2.getMat(ACCESS_RW);
-//
-//    //instantiate detectors/matchers
-//    SURFDetector surf;
-//
-//    SURFMatcher<BFMatcher> matcher;
-//
-//    //-- start of timing section
-//
-//    for (int i = 0; i <= LOOP_NUM; i++)
-//    {
-//        if (i == 1) workBegin();
-//        surf(img1.getMat(ACCESS_READ), Mat(), keypoints1, descriptors1);
-//        surf(img2.getMat(ACCESS_READ), Mat(), keypoints2, descriptors2);
-//        matcher.match(descriptors1, descriptors2, matches);
-//    }
-//
-//    workEnd();
-//    std::cout << "FOUND " << keypoints1.size() << " keypoints on first image" << std::endl;
-//    std::cout << "FOUND " << keypoints2.size() << " keypoints on second image" << std::endl;
-//
-//    surf_time = getTime();
-//    std::cout << "SURF run time: " << surf_time / LOOP_NUM << " ms" << std::endl << "\n";
-//
-//
-//    std::vector<Point2f> corner;
-//    Mat img_matches = drawGoodMatches(img1.getMat(ACCESS_READ), img2.getMat(ACCESS_READ), keypoints1, keypoints2, matches, corner);
-//
-//    std::vector<Point2f> pnts2d1, pnts2d2;
-//    std::vector<Point3f> pnts3d;
-//    for (auto& i : matches) {
-//        pnts2d1.push_back(keypoints1[i.queryIdx].pt);
-//        pnts2d2.push_back(keypoints2[i.trainIdx].pt);
-//    }
-int main() {
-    //Create SIFT class pointer
-    Ptr<Feature2D> f2d = SIFT::create();
-    //读入图片
-    Mat img_1 = imread("17-1.bmp");
-    Mat img_2 = imread("17-2.bmp");
-    //第一步，用SIFT算子检测关键点
-    vector<KeyPoint> keypoints_1, keypoints_2;
-    f2d->detect(img_1, keypoints_1);
-    f2d->detect(img_2, keypoints_2);
-    //第二步,计算特征向量
-    Mat descriptors_1, descriptors_2;
-    f2d->compute(img_1, keypoints_1, descriptors_1);
-    f2d->compute(img_2, keypoints_2, descriptors_2);
-    // 第三步,用BFMatcher进行匹配特征向量
-    BFMatcher matcher;
-    vector<DMatch> matches;
-    matcher.match(descriptors_1, descriptors_2, matches);
-    //第四步,提取出前20个最佳匹配结果
-    std::nth_element(matches.begin(),     //匹配器算子的初始位置
-        matches.begin() + 19,   // 排序的数量
-        matches.end());       // 结束位置
-//剔除掉其余的匹配结果
-    matches.erase(matches.begin() + 20, matches.end());
+int main(int argc, char* argv[])
+{
+    const char* keys =
+        "{ h help     |                  | print help message  }"
+        "{ l left     | 17-1.bmp          | specify left image  }"
+        "{ r right    | 17-2.bmp | specify right image }"
+        "{ o output   | SURF_output.jpg  | specify output save path }"
+        "{ m cpu_mode |                  | run without OpenCL }";
 
-    //第五步,绘制匹配出的关键点
-    //Mat img_matches;
-    //drawMatches(img_1, keypoints_1, img_2, keypoints_2, matches, img_matches);
-    //imshow("【match图】", img_matches);
-    ////等待任意按键按下
-    //waitKey(0);
-    //read the data
-    vector<Point2f> pnts2d1, pnts2d2;
-    for (auto& i : matches) {
-        pnts2d1.push_back(keypoints_1[i.queryIdx].pt);
-        pnts2d2.push_back(keypoints_2[i.trainIdx].pt);
+    CommandLineParser cmd(argc, argv, keys);
+
+    UMat img1, img2;
+
+    std::string outpath = cmd.get<std::string>("o");
+
+    std::string leftName = cmd.get<std::string>("l");
+    imread(leftName, IMREAD_GRAYSCALE).copyTo(img1);
+    if (img1.empty())
+    {
+        std::cout << "Couldn't load " << leftName << std::endl;
+        cmd.printMessage();
+        return EXIT_FAILURE;
     }
+
+    std::string rightName = cmd.get<std::string>("r");
+    imread(rightName, IMREAD_GRAYSCALE).copyTo(img2);
+    if (img2.empty())
+    {
+        std::cout << "Couldn't load " << rightName << std::endl;
+        cmd.printMessage();
+        return EXIT_FAILURE;
+    }
+
+    double surf_time = 0.;
+
+    //declare input/output
+    std::vector<KeyPoint> keypoints1, keypoints2;
+    std::vector<DMatch> matches;
+
+    UMat _descriptors1, _descriptors2;
+    Mat descriptors1 = _descriptors1.getMat(ACCESS_RW),
+        descriptors2 = _descriptors2.getMat(ACCESS_RW);
+
+    //instantiate detectors/matchers
+    SURFDetector surf;
+
+    SURFMatcher<BFMatcher> matcher;
+
+    //-- start of timing section
+
+    for (int i = 0; i <= LOOP_NUM; i++)
+    {
+        if (i == 1) workBegin();
+        surf(img1.getMat(ACCESS_READ), Mat(), keypoints1, descriptors1);
+        surf(img2.getMat(ACCESS_READ), Mat(), keypoints2, descriptors2);
+        matcher.match(descriptors1, descriptors2, matches);
+    }
+
+    workEnd();
+    std::cout << "FOUND " << keypoints1.size() << " keypoints on first image" << std::endl;
+    std::cout << "FOUND " << keypoints2.size() << " keypoints on second image" << std::endl;
+
+    surf_time = getTime();
+    std::cout << "SURF run time: " << surf_time / LOOP_NUM << " ms" << std::endl << "\n";
+
+
+    std::vector<Point2f> corner;
+    Mat img_matches = drawGoodMatches(img1.getMat(ACCESS_READ), img2.getMat(ACCESS_READ), keypoints1, keypoints2, matches, corner);
+
+    std::vector<Point2f> pnts2d1, pnts2d2;
+    std::vector<Point3f> pnts3d;
+    for (auto& i : matches) {
+        pnts2d1.push_back(keypoints1[i.queryIdx].pt);
+        pnts2d2.push_back(keypoints2[i.trainIdx].pt);
+    }
+
     std::vector<Point3f> pnts3d;
 
     FileStorage fs("intrinsics.yml", FileStorage::READ);
