@@ -19,13 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HumanoidRobot.cpp" />
-    <ClCompile Include="icp_match.cpp" />
-    <ClCompile Include="sparse_match.cpp" />
+    <ClInclude Include="icp\icp_match.h" />
+    <ClInclude Include="pointcloud_generate\HumanoidRobot.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HumanoidRobot.h" />
-    <ClInclude Include="icp_match.h" />
+    <ClCompile Include="icp\icp_match.cpp" />
+    <ClCompile Include="pointcloud_generate\HumanoidRobot.cpp" />
+    <ClCompile Include="SURF-src\surf_match.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

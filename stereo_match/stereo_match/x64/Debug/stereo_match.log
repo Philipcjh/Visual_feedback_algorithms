@@ -1,3 +1,0 @@
-﻿E:\Visual_Feedback_Algorithms\Visual_feedback_algorithms\stereo_match\stereo_match\stereo_match.vcxproj(77,5): warning MSB4011: 无法再次导入“D:\OpenCV450\OpenCV.props”。可能已在“C:\Users\13427\AppData\Local\Microsoft\MSBuild\v4.0\Microsoft.Cpp.x64.user.props (4,5)”处导入过它。这很可能是生成创作错误。将忽略此后续导入。
-  sparse_match.cpp
-  stereo_match.vcxproj -> E:\Visual_Feedback_Algorithms\Visual_feedback_algorithms\stereo_match\x64\Debug\stereo_match.exe

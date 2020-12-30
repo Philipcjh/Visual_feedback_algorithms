@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\EIH_Calibration.cpp">
+    <ClCompile Include="EIH_Calibration.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

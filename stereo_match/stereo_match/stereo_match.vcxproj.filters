@@ -15,22 +15,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HumanoidRobot.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="icp_match.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="sparse_match.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
+    <ClInclude Include="pointcloud_generate\HumanoidRobot.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="icp\icp_match.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HumanoidRobot.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="icp_match.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
+    <ClCompile Include="icp\icp_match.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SURF-src\surf_match.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="pointcloud_generate\HumanoidRobot.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
