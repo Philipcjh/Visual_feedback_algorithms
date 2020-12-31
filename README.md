@@ -1,6 +1,6 @@
 # Visual_feedback_algorithms
 This project includes calibration and stereo_match. Before you run the codes, you need to configure the environments.  
-Instructions for environment configuration of [OpenCV and OpenCV_contri](https://blog.csdn.net/weijifen000/article/details/93377143).(OpenCV 4.5.0 is preferred.)  
+Instructions for environment configuration of [OpenCV and OpenCV_contrib](https://blog.csdn.net/weijifen000/article/details/93377143).(OpenCV 4.5.0 is preferred.)  
 Instructions for environment configuration of [PCL](https://zhuanlan.zhihu.com/p/142955614?utm_source=wechat_session).  
 ***
 ## Calibration
