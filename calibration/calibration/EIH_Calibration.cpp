@@ -353,7 +353,7 @@ static bool runAndSave(const string& outputFilename,
     return ok;
 }
 
-//RºÍT×ªRT¾ØÕó
+//Rå’ŒTè½¬RTçŸ©é˜µ
 Mat R_T2RT(Mat& R, Mat& T)
 {
     Mat RT;
@@ -363,11 +363,11 @@ Mat R_T2RT(Mat& R, Mat& T)
         0.0, 0.0, 0.0);
     cv::Mat_<double> T1 = (cv::Mat_<double>(4, 1) << T.at<double>(0, 0), T.at<double>(1, 0), T.at<double>(2, 0), 1.0);
 
-    cv::hconcat(R1, T1, RT);//C=A+B×óÓÒÆ´½Ó
+    cv::hconcat(R1, T1, RT);//C=A+Bå·¦å³æ‹¼æ¥
     return RT;
 }
 
-//RT×ªRºÍT¾ØÕó
+//RTè½¬Rå’ŒTçŸ©é˜µ
 void RT2R_T(Mat& RT, Mat& R, Mat& T)
 {
     cv::Rect R_rect(0, 0, 3, 3);
@@ -376,7 +376,7 @@ void RT2R_T(Mat& RT, Mat& R, Mat& T)
     T = RT(T_rect);
 }
 
-//ÅĞ¶ÏÊÇ·ñÎªĞı×ª¾ØÕó
+//åˆ¤æ–­æ˜¯å¦ä¸ºæ—‹è½¬çŸ©é˜µ
 bool isRotationMatrix(const cv::Mat& R)
 {
     cv::Mat tmp33 = R({ 0,0,3,3 });
@@ -389,9 +389,9 @@ bool isRotationMatrix(const cv::Mat& R)
     return  cv::norm(I, shouldBeIdentity) < 1e-6;
 }
 
-/** @brief Å·À­½Ç -> 3*3 µÄR
-*	@param 	eulerAngle		½Ç¶ÈÖµ
-*	@param 	seq				Ö¸¶¨Å·À­½ÇxyzµÄÅÅÁĞË³ĞòÈç£º"xyz" "zyx"
+/** @brief æ¬§æ‹‰è§’ -> 3*3 çš„R
+*	@param 	eulerAngle		è§’åº¦å€¼
+*	@param 	seq				æŒ‡å®šæ¬§æ‹‰è§’xyzçš„æ’åˆ—é¡ºåºå¦‚ï¼š"xyz" "zyx"
 */
 cv::Mat eulerAngleToRotatedMatrix(const cv::Mat& eulerAngle, const std::string& seq)
 {
@@ -430,10 +430,10 @@ cv::Mat eulerAngleToRotatedMatrix(const cv::Mat& eulerAngle, const std::string& 
     //cout << isRotationMatrix(rotMat) << endl;
 }
 
-/** @brief ËÄÔªÊı×ªĞı×ª¾ØÕó
-*	@note  Êı¾İÀàĞÍdouble£» ËÄÔªÊı¶¨Òå q = w + x*i + y*j + z*k
-*	@param q ËÄÔªÊıÊäÈë{w,x,y,z}ÏòÁ¿
-*	@return ·µ»ØĞı×ª¾ØÕó3*3
+/** @brief å››å…ƒæ•°è½¬æ—‹è½¬çŸ©é˜µ
+*	@note  æ•°æ®ç±»å‹doubleï¼› å››å…ƒæ•°å®šä¹‰ q = w + x*i + y*j + z*k
+*	@param q å››å…ƒæ•°è¾“å…¥{w,x,y,z}å‘é‡
+*	@return è¿”å›æ—‹è½¬çŸ©é˜µ3*3
 */
 cv::Mat quaternionToRotatedMatrix(const cv::Vec4d& q)
 {
@@ -451,10 +451,10 @@ cv::Mat quaternionToRotatedMatrix(const cv::Vec4d& q)
     return cv::Mat(res);
 }
 
-/** @brief ((ËÄÔªÊı||Å·À­½Ç||Ğı×ªÏòÁ¿) && ×ªÒÆÏòÁ¿) -> 4*4 µÄRt
-*	@param 	m				1*6 || 1*10µÄ¾ØÕó  -> 6  {x,y,z, rx,ry,rz}   10 {x,y,z, qw,qx,qy,qz, rx,ry,rz}
-*	@param 	useQuaternion	Èç¹ûÊÇ1*10µÄ¾ØÕó£¬ÅĞ¶ÏÊÇ·ñÊ¹ÓÃËÄÔªÊı¼ÆËãĞı×ª¾ØÕó
-*	@param 	seq				Èç¹ûÍ¨¹ıÅ·À­½Ç¼ÆËãĞı×ª¾ØÕó£¬ĞèÒªÖ¸¶¨Å·À­½ÇxyzµÄÅÅÁĞË³ĞòÈç£º"xyz" "zyx" Îª¿Õ±íÊ¾Ğı×ªÏòÁ¿
+/** @brief ((å››å…ƒæ•°||æ¬§æ‹‰è§’||æ—‹è½¬å‘é‡) && è½¬ç§»å‘é‡) -> 4*4 çš„Rt
+*	@param 	m				1*6 || 1*10çš„çŸ©é˜µ  -> 6  {x,y,z, rx,ry,rz}   10 {x,y,z, qw,qx,qy,qz, rx,ry,rz}
+*	@param 	useQuaternion	å¦‚æœæ˜¯1*10çš„çŸ©é˜µï¼Œåˆ¤æ–­æ˜¯å¦ä½¿ç”¨å››å…ƒæ•°è®¡ç®—æ—‹è½¬çŸ©é˜µ
+*	@param 	seq				å¦‚æœé€šè¿‡æ¬§æ‹‰è§’è®¡ç®—æ—‹è½¬çŸ©é˜µï¼Œéœ€è¦æŒ‡å®šæ¬§æ‹‰è§’xyzçš„æ’åˆ—é¡ºåºå¦‚ï¼š"xyz" "zyx" ä¸ºç©ºè¡¨ç¤ºæ—‹è½¬å‘é‡
 */
 cv::Mat attitudeVectorToMatrix(cv::Mat& m, bool useQuaternion, const std::string& seq)
 {
@@ -463,7 +463,7 @@ cv::Mat attitudeVectorToMatrix(cv::Mat& m, bool useQuaternion, const std::string
         m = m.t();
     cv::Mat tmp = cv::Mat::eye(4, 4, CV_64FC1);
 
-    //Èç¹ûÊ¹ÓÃËÄÔªÊı×ª»»³ÉĞı×ª¾ØÕóÔò¶ÁÈ¡m¾ØÕóµÄµÚµÚËÄ¸ö³ÉÔ±£¬¶Á4¸öÊı¾İ
+    //å¦‚æœä½¿ç”¨å››å…ƒæ•°è½¬æ¢æˆæ—‹è½¬çŸ©é˜µåˆ™è¯»å–mçŸ©é˜µçš„ç¬¬å››ä¸ªæˆå‘˜ï¼Œè¯»4ä¸ªæ•°æ®
     if (useQuaternion)	// normalized vector, its norm should be 1.
     {
         cv::Vec4d quaternionVec = m({ 3, 0, 4, 1 });
@@ -478,7 +478,7 @@ cv::Mat attitudeVectorToMatrix(cv::Mat& m, bool useQuaternion, const std::string
         else
             rotVec = m({ 7, 0, 3, 1 });		//10
 
-        //Èç¹ûseqÎª¿Õ±íÊ¾´«ÈëµÄÊÇĞı×ªÏòÁ¿£¬·ñÔò"xyz"µÄ×éºÏ±íÊ¾Å·À­½Ç
+        //å¦‚æœseqä¸ºç©ºè¡¨ç¤ºä¼ å…¥çš„æ˜¯æ—‹è½¬å‘é‡ï¼Œå¦åˆ™"xyz"çš„ç»„åˆè¡¨ç¤ºæ¬§æ‹‰è§’
         if (0 == seq.compare(""))
             cv::Rodrigues(rotVec, tmp({ 0, 0, 3, 3 }));
         else
@@ -490,7 +490,7 @@ cv::Mat attitudeVectorToMatrix(cv::Mat& m, bool useQuaternion, const std::string
 }
 
 
-//»úĞµ±ÛÄ©¶ËÎ»×Ë,x,y,z,rx,ry,rz
+//æœºæ¢°è‡‚æœ«ç«¯ä½å§¿,x,y,z,rx,ry,rz
 Mat_<double> ToolPose = (cv::Mat_<double>(7, 6) <<
     447, -115.57, 428, 3.02, 1.29, -0.24,
     459.7, 23.49, 424.62, 2.6, 1.51, -0.431,
@@ -772,10 +772,10 @@ int main(int argc, char** argv)
         }
     }
 
-    //Ïà»úÖĞ30×é±ê¶¨°åµÄÎ»×Ë£¬x,y,z£¬rx,ry,rz,
+    //ç›¸æœºä¸­30ç»„æ ‡å®šæ¿çš„ä½å§¿ï¼Œx,y,zï¼Œrx,ry,rz,
     Mat_<double> CalPose = bigmat;
 
-    //¶¨ÒåÊÖÑÛ±ê¶¨¾ØÕó
+    //å®šä¹‰æ‰‹çœ¼æ ‡å®šçŸ©é˜µ
     std::vector<Mat> R_gripper2base;
     std::vector<Mat> t_gripper2base;
     std::vector<Mat> R_target2cam;
@@ -786,12 +786,12 @@ int main(int argc, char** argv)
     vector<Mat> images;
     size_t num_images = 7;
 
-    // ¶ÁÈ¡Ä©¶Ë£¬±ê¶¨°åµÄ×ËÌ¬¾ØÕó 4*4
+    // è¯»å–æœ«ç«¯ï¼Œæ ‡å®šæ¿çš„å§¿æ€çŸ©é˜µ 4*4
     std::vector<cv::Mat> vecHg, vecHc;
-    cv::Mat Hcg;//¶¨ÒåÏà»úcameraµ½Ä©¶ËgrabµÄÎ»×Ë¾ØÕó
+    cv::Mat Hcg;//å®šä¹‰ç›¸æœºcameraåˆ°æœ«ç«¯grabçš„ä½å§¿çŸ©é˜µ
     Mat tempR, tempT;
 
-    for (size_t i = 0; i < num_images; i++)//¼ÆËã±ê¶¨°åÎ»×Ë
+    for (size_t i = 0; i < num_images; i++)//è®¡ç®—æ ‡å®šæ¿ä½å§¿
     {
         cv::Mat tmp = attitudeVectorToMatrix(CalPose.row(i), false, ""); 
         vecHc.push_back(tmp);
@@ -800,7 +800,7 @@ int main(int argc, char** argv)
         t_target2cam.push_back(tempT);
     }
 
-    for (size_t i = 0; i < num_images; i++)//¼ÆËã»úĞµ±ÛÎ»×Ë
+    for (size_t i = 0; i < num_images; i++)//è®¡ç®—æœºæ¢°è‡‚ä½å§¿
     {
         cv::Mat tmp = attitudeVectorToMatrix(ToolPose.row(i), false, ""); 
         vecHg.push_back(tmp);
@@ -811,32 +811,32 @@ int main(int argc, char** argv)
 
     calibrateHandEye(R_gripper2base, t_gripper2base, R_target2cam, t_target2cam, R_cam2gripper, t_cam2gripper, CALIB_HAND_EYE_TSAI);
 
-    Hcg = R_T2RT(R_cam2gripper, t_cam2gripper);//¾ØÕóºÏ²¢
+    Hcg = R_T2RT(R_cam2gripper, t_cam2gripper);//çŸ©é˜µåˆå¹¶
 
-    std::cout << "Hcg ¾ØÕóÎª£º " << std::endl;
+    std::cout << "Hcg çŸ©é˜µä¸ºï¼š " << std::endl;
     std::cout << Hcg << std::endl;
-    cout << "ÊÇ·ñÎªĞı×ª¾ØÕó£º" << isRotationMatrix(Hcg) << std::endl << std::endl;//ÅĞ¶ÏÊÇ·ñÎªĞı×ª¾ØÕó
+    cout << "æ˜¯å¦ä¸ºæ—‹è½¬çŸ©é˜µï¼š" << isRotationMatrix(Hcg) << std::endl << std::endl;//åˆ¤æ–­æ˜¯å¦ä¸ºæ—‹è½¬çŸ©é˜µ
 
-    //Tool_In_Base*Hcg*Cal_In_Cam£¬ÓÃµÚÒ»×éºÍµÚ¶ş×é½øĞĞ¶Ô±ÈÑéÖ¤
-    cout << "µÚÒ»×éºÍµÚ¶ş×éÊÖÑÛÊı¾İÑéÖ¤£º" << endl;
+    //Tool_In_Base*Hcg*Cal_In_Camï¼Œç”¨ç¬¬ä¸€ç»„å’Œç¬¬äºŒç»„è¿›è¡Œå¯¹æ¯”éªŒè¯
+    cout << "ç¬¬ä¸€ç»„å’Œç¬¬äºŒç»„æ‰‹çœ¼æ•°æ®éªŒè¯ï¼š" << endl;
     cout << vecHg[0] * Hcg * vecHc[0] << endl << vecHg[1] * Hcg * vecHc[1] << endl << endl;//.inv()
 
-    cout << "µÚÈı×éºÍµÚËÄ×éÊÖÑÛÊı¾İÑéÖ¤£º" << endl;
+    cout << "ç¬¬ä¸‰ç»„å’Œç¬¬å››ç»„æ‰‹çœ¼æ•°æ®éªŒè¯ï¼š" << endl;
     cout << vecHg[2] * Hcg * vecHc[2] << endl << vecHg[3] * Hcg * vecHc[3] << endl << endl;//.inv()
 
 
-    cout << "±ê¶¨°åÔÚÏà»úÖĞµÄÎ»×Ë£º" << endl;
+    cout << "æ ‡å®šæ¿åœ¨ç›¸æœºä¸­çš„ä½å§¿ï¼š" << endl;
     cout << vecHc[1] << endl;
-    cout << "ÊÖÑÛÏµÍ³·´ÑİµÄÎ»×ËÎª£º" << endl;
-    //ÓÃÊÖÑÛÏµÍ³Ô¤²âµÚÒ»×éÊı¾İÖĞ±ê¶¨°åÏà¶ÔÏà»úµÄÎ»×Ë£¬ÊÇ·ñÓëvecHc[1]ÏàÍ¬
+    cout << "æ‰‹çœ¼ç³»ç»Ÿåæ¼”çš„ä½å§¿ä¸ºï¼š" << endl;
+    //ç”¨æ‰‹çœ¼ç³»ç»Ÿé¢„æµ‹ç¬¬ä¸€ç»„æ•°æ®ä¸­æ ‡å®šæ¿ç›¸å¯¹ç›¸æœºçš„ä½å§¿ï¼Œæ˜¯å¦ä¸vecHc[1]ç›¸åŒ
     cout << Hcg.inv() * vecHg[1].inv() * vecHg[0] * Hcg * vecHc[0] << endl << endl;
 
-    cout << "----ÊÖÑÛÏµÍ³²âÊÔ----" << endl;
-    cout << "»úĞµ±ÛÏÂ±ê¶¨°åXYZÎª£º" << endl;
+    cout << "----æ‰‹çœ¼ç³»ç»Ÿæµ‹è¯•----" << endl;
+    cout << "æœºæ¢°è‡‚ä¸‹æ ‡å®šæ¿XYZä¸ºï¼š" << endl;
     //FileStorage fs("CIH.yaml", FileStorage::WRITE);
     for (int i = 0; i < vecHc.size(); ++i)
     {
-        cv::Mat cheesePos{ 0.0,0.0,0.0,1.0 };//4*1¾ØÕó£¬µ¥¶ÀÇó»úĞµ±ÛÏÂ£¬±ê¶¨°åµÄxyz
+        cv::Mat cheesePos{ 0.0,0.0,0.0,1.0 };//4*1çŸ©é˜µï¼Œå•ç‹¬æ±‚æœºæ¢°è‡‚ä¸‹ï¼Œæ ‡å®šæ¿çš„xyz
         cv::Mat worldPos = vecHg[i] * Hcg * vecHc[i] * cheesePos;
         cout << i+1 << ": " << worldPos.t() << endl;
         //fs << "No" << i;
